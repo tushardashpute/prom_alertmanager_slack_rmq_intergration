@@ -17,14 +17,20 @@
     
     rabbitmq-plugins enable rabbitmq_management
     
-    k exec mu-rabbit-rabbitmq-0 -n rabbit -- rabbitmq-plugins enable rabbitmq_prometheus
-    k exec mu-rabbit-rabbitmq-0 -n rabbit -- curl -v -H "Accept:text/plain" "http://localhost:15692/metrics"
+    kubectl exec mu-rabbit-rabbitmq-0 -n rabbit -- rabbitmq-plugins enable rabbitmq_prometheus
+    
+    kubectl exec mu-rabbit-rabbitmq-0 -n rabbit -- curl -v -H "Accept:text/plain" "http://localhost:15692/metrics"
     
 # Deploy Node Exporter 
     kubectl apply -f node-exporter
 # Deploy kube-state-metrics
     kubectl apply -f kube-state-metrics
 # Deploy alertmanager
+
+    Edit the config.yml and update the slack web hook in it with your slack web hook.
+    
+    slack_api_url: 'https://hooks.slack.com/services/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'
+
     kubectl apply -f alertmanager
 # Deploy prometheus
     kubectl apply -f prometheus
@@ -66,5 +72,5 @@ Now post 10+messages to Queue, after one minutes alert with be in Firing state f
 
 # Alaram2: Connect to node and try to increase CPU Utilization, will get Alaram
 # Alaram3: Deploy nginx
-    kubectl apply -f nginx-deployment.yml
+  kubectl apply -f nginx-deployment.yml
   Nginx Pod status will be under pending state, So will get Alaram
