@@ -1,4 +1,4 @@
-# prometheus-alertmanager-kubernetes
+# prometheus-alertmanager-slack-RMQ-kubernetes
 
 # Pre-Requisites:
     EKS-Cluster
@@ -19,7 +19,7 @@
     
     k exec mu-rabbit-rabbitmq-0 -n rabbit -- rabbitmq-plugins enable rabbitmq_prometheus
     k exec mu-rabbit-rabbitmq-0 -n rabbit -- curl -v -H "Accept:text/plain" "http://localhost:15692/metrics"
-        
+    
 # Deploy Node Exporter 
     kubectl apply -f node-exporter
 # Deploy kube-state-metrics
@@ -36,7 +36,31 @@
 
 # Alarm1: Create a new Queue TestQueue and post more than 12 messages, will get alarm
 
+Now login to RMQ UI and create testQueue
 
+kubectl get svc mu-rabbit-rabbitmq -n rabbit --> Now grab the ALB url and login 
+
+http://url:15672
+
+User : user
+echo "Password      : $(kubectl get secret --namespace rabbit mu-rabbit-rabbitmq -o jsonpath="{.data.rabbitmq-password}" | base64 --decode)"
+echo "ErLang Cookie : $(kubectl get secret --namespace rabbit mu-rabbit-rabbitmq -o jsonpath="{.data.rabbitmq-erlang-cookie}" | base64 --decode)"
+
+Create Exchange 
+
+![image](https://user-images.githubusercontent.com/74225291/145673483-94ba9293-2484-41ac-a54c-d35f04691830.png)
+
+Then create Queue
+
+![image](https://user-images.githubusercontent.com/74225291/145673641-717dd050-a358-49ff-b555-17b287a23dab.png)
+
+Now bind the Exchange with Queue.
+
+Exchange --> TestExchange --> Add Binding 
+
+![image](https://user-images.githubusercontent.com/74225291/145673712-ff9d27c8-135e-4012-a362-32bb16ed515f.png)
+
+Now post 10+messages to Queue, after one minutes alert with be in Firing state from Active state.
 
 ![image](https://user-images.githubusercontent.com/74225291/145672055-71d27167-8319-4ca9-bfce-e99d08148faa.png)
 
