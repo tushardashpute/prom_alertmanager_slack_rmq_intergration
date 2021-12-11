@@ -29,6 +29,8 @@
 
     Edit the config.yml and update the slack web hook in it with your slack web hook.
     
+    https://api.slack.com/messaging/webhooks --> How to create Slack app and get web hook URL
+    
     slack_api_url: 'https://hooks.slack.com/services/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'
 
     kubectl apply -f alertmanager
