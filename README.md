@@ -70,6 +70,8 @@ Now post 10+messages to Queue, after one minutes alert with be in Firing state f
 
 ![image](https://user-images.githubusercontent.com/74225291/145672055-71d27167-8319-4ca9-bfce-e99d08148faa.png)
 
+Now you will see alert notification in Slack as well.
+
 # Alaram2: Connect to node and try to increase CPU Utilization, will get Alaram
 # Alaram3: Deploy nginx
   kubectl apply -f nginx-deployment.yml
